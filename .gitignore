@@ -13,3 +13,8 @@ obj/
 *.crt
 *.pfx
 *.key
+
+# VIMMM
+*.swp
+*.swo
+*~

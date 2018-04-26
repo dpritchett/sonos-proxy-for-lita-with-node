@@ -10,33 +10,39 @@ var request = require("request");
 // connect to socket for bot commands
 // the basic idea is that we just proxy commands to the referenced HTTP API
 
-var registerListener = function() {
+var connectToCommander = function () {
   var serviceUrl = settings.clearbotUrl;
+  var WebSocket = require('faye-websocket'),
+    ws        = new WebSocket.Client(serviceUrl);
 
-  var socket = require("socket.io-client")(serviceUrl);
-
-  socket.on("connect", function() {
-    console.log("Connected to server: " + serviceUrl);
+  ws.on('open', function(event) {
+    console.log('open');
+    ws.send('Hello, world!');
   });
 
-  socket.on("play_url", function(data) {
+  ws.on('message', function(event) {
+    console.log('message', event.data);
+  });
+
+  ws.on('close', function(event) {
+    console.log('close', event.code, event.reason);
+    ws = null;
+  });
+
+  ws.on('play_url', function(data) {
     request(
-      `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/clipall/${encodeURIComponent(
-        data.url
-      )}/${data.volume}`
+      `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/clipall/${encodeURIComponent(data.url)}/${data.volume}`
     );
   });
 
-  socket.on("play_text", function(data) {
-    console.log("Received say: ", data);
+  ws.on('play_text', function(data) {
+    console.log('Received say: ', data);
     request(
-      `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/sayall/${encodeURIComponent(
-        data.text
-      )}/${data.volume}`
+      `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/sayall/${encodeURIComponent(data.text)}/${data.volume}`
     );
   });
 
-  socket.on("close", function() {
+  ws.on('close', function() {
     console.log(`Lost contact with server: ${serviceUrl}`);
     console.log("I don't know how to reconnect yet.  Please help!");
     process.exit(1);
@@ -47,4 +53,4 @@ var registerListener = function() {
 require("sonos-http-api/server");
 console.log(`Looking for Sonos speakers`);
 
-registerListener();
+connectToCommander();
