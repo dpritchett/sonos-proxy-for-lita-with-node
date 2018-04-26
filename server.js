@@ -51,7 +51,7 @@ var connectToCommander = function () {
   });
 
   ws.on('close', function() {
-    console.log('close', event.code, event.reason);
+    console.log('close event received');
     ws = null;
 
     console.log(`Lost contact with server: ${serviceUrl}`);

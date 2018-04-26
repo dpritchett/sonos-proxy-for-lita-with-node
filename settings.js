@@ -1,3 +1,3 @@
 module.exports = {
-  clearbotUrl: "ws://localhost:8080/sonos/listen",
+  clearbotUrl: 'ws://ad0ede69.ngrok.io/sonos/listen',
 };
