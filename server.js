@@ -21,28 +21,39 @@ var connectToCommander = function () {
   });
 
   ws.on('message', function(event) {
-    console.log('message', event.data);
-  });
+    var payload = JSON.parse(event.data);
 
-  ws.on('close', function(event) {
-    console.log('close', event.code, event.reason);
-    ws = null;
-  });
+    console.log(payload);
 
-  ws.on('play_url', function(data) {
-    request(
-      `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/clipall/${encodeURIComponent(data.url)}/${data.volume}`
-    );
-  });
+    var command = payload.command;
+    var data = payload.data;
 
-  ws.on('play_text', function(data) {
-    console.log('Received say: ', data);
-    request(
-      `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/sayall/${encodeURIComponent(data.text)}/${data.volume}`
-    );
+    if(!command) {
+      return console.log("No command detected.");
+    } else {
+      switch(command) {
+        case 'play_text':
+          console.log('Received say text request: ', data);
+          request(
+            `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/sayall/${encodeURIComponent(data.text)}/${data.volume}`
+          );
+          break;
+        case 'play_url':
+          console.log('Received Play Url request: ', data);
+          request(
+            `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/clipall/${encodeURIComponent(data.url)}/${data.volume}`
+          );
+          break;
+        default:
+          console.log('Unhandled command received! ' + command);
+      }
+    }
   });
 
   ws.on('close', function() {
+    console.log('close', event.code, event.reason);
+    ws = null;
+
     console.log(`Lost contact with server: ${serviceUrl}`);
     console.log("I don't know how to reconnect yet.  Please help!");
     process.exit(1);
