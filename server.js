@@ -34,15 +34,16 @@ var connectToCommander = function () {
       switch(command) {
         case 'play_text':
           console.log('Received say text request: ', data);
-          request(
-            `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/sayall/${encodeURIComponent(data.text)}/${data.volume}`
-          );
+          var requestUrl = `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/sayall/${encodeURIComponent(data.text)}/${data.volume}`;
+          console.log("Hitting " + requestUrl);
+          request(requestUrl);
           break;
         case 'play_url':
           console.log('Received Play Url request: ', data);
-          request(
-            `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/clipall/${encodeURIComponent(data.url)}/${data.volume}`
-          );
+          var requestUrl = `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/clipall/${encodeURIComponent(data.url)}/${data.volume}`;
+          
+          console.log("Hitting " + requestUrl);
+          request(requestUrl);
           break;
         default:
           console.log('Unhandled command received! ' + command);
