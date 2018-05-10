@@ -2,6 +2,9 @@
   "name": "sonos_proxy_node",
   "version": "1.0.0",
   "description": "A socket client for https://github.com/clearfunction/clearbot sonos integration",
+  "engines": {
+    "node": ">=9.4.0"
+  },
   "scripts": {
     "start": "node server.js"
   },
