@@ -11,7 +11,7 @@ var request = require("request");
 // the basic idea is that we just proxy commands to the referenced HTTP API
 
 var connectToCommander = function () {
-  var serviceUrl = settings.clearbotUrl;
+  var serviceUrl = settings.litaUrl;
   var WebSocket = require('faye-websocket'),
     ws        = new WebSocket.Client(serviceUrl);
 

@@ -1,3 +1,3 @@
 module.exports = {
-  clearbotUrl: 'ws://localhost:8080/sonos/listen',
+  litaUrl: 'ws://localhost:8080/sonos/listen',
 };
