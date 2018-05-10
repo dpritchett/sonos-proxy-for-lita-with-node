@@ -40,7 +40,7 @@ var connectToCommander = function () {
           break;
         case 'play_url':
           console.log('Received Play Url request: ', data);
-          var requestUrl = `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/clipall/${encodeURIComponent(data.url)}/${data.volume}`;
+          var requestUrl = `http://${discovery.localEndpoint}:${sonosHttpSettings.port}/clipall/${encodeURIComponent(data.text)}/${data.volume}`;
           
           console.log("Hitting " + requestUrl);
           request(requestUrl);
