@@ -7,6 +7,8 @@ const SonosSystem = require("sonos-discovery");
 const discovery = new SonosSystem(sonosHttpSettings);
 var request = require("request");
 
+var x = "unused variable";
+
 // connect to socket for bot commands
 // the basic idea is that we just proxy commands to the referenced HTTP API
 
